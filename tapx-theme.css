@@ -191,10 +191,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .large-preview-canvas iframe { background: var(--tapx-white); border-color: #b8c6d8; box-shadow: 0 8px 20px #061e3f20; }
 .confirm-dialog .confirm-icon { background: var(--tapx-soft-red); color: var(--tapx-red); }
 .no-script { border-color: var(--tapx-navy); }
-.saved-card-link { border-top: 1px solid var(--tapx-border); padding: 14px 4px 0; font-size: 10px; color: var(--tapx-muted); }
-.saved-card-link a { display: inline-flex; align-items: center; gap: 6px; }
-.saved-card-link a:hover { color: var(--tapx-red); }
-.saved-card-link .icon { width: 13px; height: 13px; }
+.saved-card-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.saved-card-button:hover { background: var(--tapx-red-hover); border-color: var(--tapx-red-hover); }
 .storage-notice { display: flex; gap: 10px; align-items: flex-start; border: 1px solid #d7e3f4; background: #edf3fb; color: var(--tapx-muted); padding: 13px 16px; margin-bottom: 20px; border-radius: 8px; font-size: 10px; line-height: 1.8; }
 .storage-notice > span { color: var(--tapx-red); margin-top: 1px; }
 .storage-notice .icon { width: 16px; height: 16px; }

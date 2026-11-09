@@ -109,6 +109,9 @@ function updateState() {
   status.className = `save-status ${isDirty ? 'dirty' : ''}`;
   status.innerHTML = `<i></i>${saving ? 'Saving…' : uploading ? 'Preparing photo…' : isDirty ? 'Unsaved changes' : 'All changes saved'}`;
   $('#save-button').disabled = !isDirty || saving || uploading;
+  const canViewSaved = Boolean(savedAt) && !isDirty && !saving && !uploading;
+  $('#view-saved-card-button').hidden = !canViewSaved;
+  $('#save-button').hidden = canViewSaved;
   $('#preview-save-button').disabled = !isDirty || saving || uploading;
   $('#discard-button').disabled = !isDirty || saving || uploading;
   $('#reset-button').disabled = saving || uploading || JSON.stringify(draft) === JSON.stringify(DEFAULT_CARD);
