@@ -1,2 +1,3 @@
-# tapx-card-editor-pages
-GitHub Pages deployment of TapX Card Studio. Saves stay in each visitor’s browser.
+# TapX Card Studio
+
+Public GitHub Pages deployment files. Changes are saved only in each visitor’s browser. Use the JSON backup and standalone HTML export to keep or move edited cards.

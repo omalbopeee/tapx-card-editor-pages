@@ -1,0 +1,21 @@
+.hero { background: linear-gradient(100deg, var(--hero-start, #17221c) 15%, var(--hero-end, #020503)); }
+.hero::after { background: linear-gradient(90deg, var(--hero-start, #17221c), transparent 70%); opacity: .35; }
+.hero-top .eyebrow, .hello { color: var(--gold); }
+.share-profile { background: var(--green); color: var(--gold); }
+.intro h2, .multiline { white-space: pre-line; overflow-wrap: anywhere; }
+.actions { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.actions a { overflow-wrap: anywhere; }
+.about-body p, .social-copy, .role, .company, .social-links strong, .social-links small { overflow-wrap: anywhere; }
+.social-icons { max-width: 90px; overflow: hidden; }
+.portrait img { object-position: var(--photo-position, 50%) center; }
+.hero.no-photo .identity { padding-top: 60px; }
+.social-copy small { overflow: hidden; text-overflow: ellipsis; }
+.card-loading { padding: 40px; text-align: center; }
+.empty-card-note { color: var(--muted); font-size: 12px; }
+.save:hover, .share-profile:hover { filter: brightness(1.12); background: var(--green); }
+.social-tile .social-icons .icon { flex-shrink: 0; }
+@media (max-width: 1023px) {
+  .show-mobile-intro .intro { display: block; margin-bottom: 20px; }
+  .show-mobile-intro .intro h2 { font-size: 27px; }
+  .hero.no-photo .identity { padding-top: 0; }
+}
