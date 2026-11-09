@@ -17,6 +17,7 @@ function renderCard(card) {
   const { profile: p, wording: w, design: d, background: b } = card;
   const name = `${p.firstName} ${p.lastName}`.trim();
   const contacts = card.contacts.filter(c => c.visible && c.value && contactURL(c));
+  const websiteURL = card.website.enabled ? safeURL(card.website.url) : '';
   const socials = card.socials.filter(s => s.visible && safeURL(s.url));
   const photo = photoURL(p.photo);
   document.title = `${name} | Digital Business Card`;
@@ -39,8 +40,7 @@ function renderCard(card) {
         <section class="content" id="contact" tabindex="-1" aria-label="Contact ${e(name)}">
           <div class="intro"><span class="eyebrow">${e(w.introEyebrow)}</span><h2>${lines(w.introHeading)}</h2><p>${e(w.introDescription)}</p></div>
           <button class="save" type="button" data-action="vcard">${icon('add')}<span>${e(w.saveContact)}</span>${icon('download')}</button>
-          ${contacts.length ? `<div class="actions" role="group" aria-label="Get in touch">${contacts.map(c => `<a class="${c.type === 'whatsapp' ? 'wa' : ''}" href="${e(contactURL(c))}" ${['website', 'whatsapp'].includes(c.type) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${icon(c.type)}<span>${e(c.label)}</span></a>`).join('')}</div>` : ''}
-          ${card.website.enabled && safeURL(card.website.url) ? `<a class="website-button" href="${e(safeURL(card.website.url))}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>My website</span>${icon('external')}</a>` : ''}
+          ${contacts.length || websiteURL ? `<div class="actions" role="group" aria-label="Get in touch">${contacts.map(c => `<a class="${c.type === 'whatsapp' ? 'wa' : ''}" href="${e(contactURL(c))}" ${['website', 'whatsapp'].includes(c.type) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${icon(c.type)}<span>${e(c.label)}</span></a>`).join('')}${websiteURL ? `<a class="website-button" href="${e(websiteURL)}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>My website</span></a>` : ''}</div>` : ''}
           ${d.showSocial && socials.length ? `<button class="social-tile" type="button" data-dialog="social" aria-haspopup="dialog"><span class="social-icons">${socials.slice(0, 3).map(s => icon(s.platform, s.platform)).join('')}</span><span class="social-copy"><strong>${e(w.findOnline)}</strong><small>${e(socials.map(s => s.label).join(' · '))}</small></span>${icon('chevron')}</button>` : ''}
           ${d.showBackground ? `<button class="background-button" type="button" data-dialog="background" aria-haspopup="dialog"><span>${e(w.backgroundLabel)}</span>${icon('chevron')}</button>` : ''}
         </section>
