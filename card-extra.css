@@ -11,6 +11,10 @@
 .hero.no-photo .identity { padding-top: 60px; }
 .social-copy small { overflow: hidden; text-overflow: ellipsis; }
 .card-loading { padding: 40px; text-align: center; }
+.website-button { display: flex; align-items: center; gap: 10px; padding: 13px 15px; margin: 0 0 13px; min-height: 48px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); color: var(--green); font-size: 13px; font-weight: 600; }
+.website-button span { flex: 1; }
+.website-button .icon:last-child { width: 17px; height: 17px; }
+.website-button:hover { background: var(--canvas); border-color: var(--green); }
 .empty-card-note { color: var(--muted); font-size: 12px; }
 .save:hover, .share-profile:hover { filter: brightness(1.12); background: var(--green); }
 .social-tile .social-icons .icon { flex-shrink: 0; }

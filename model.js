@@ -12,6 +12,7 @@ export const DEFAULT_CARD = {
     { id: 'whatsapp', type: 'whatsapp', label: 'WhatsApp', value: '+94716278399', visible: true },
     { id: 'email', type: 'email', label: 'Email', value: 'Ovinb.consumer@hemas.com', visible: true }
   ],
+  website: { enabled: false, url: '' },
   socials: [
     { id: 'linkedin', platform: 'linkedin', label: 'LinkedIn', description: 'Professional connections', url: 'https://www.linkedin.com/in/ovin-bopage-71206228b/', visible: true },
     { id: 'instagram', platform: 'instagram', label: 'Instagram', description: 'A more personal side', url: 'https://www.instagram.com/___bopeeeee___?psln=eW9sajF6dHQ5NXo5', visible: true },
@@ -51,10 +52,12 @@ export const DEFAULT_CARD = {
 export const CONTACT_TYPES = { phone: 'Phone number', whatsapp: 'WhatsApp', email: 'Email address', website: 'Website' };
 export const PLATFORMS = { linkedin: 'LinkedIn', instagram: 'Instagram', facebook: 'Facebook', x: 'X / Twitter', youtube: 'YouTube', tiktok: 'TikTok', github: 'GitHub', website: 'Website', other: 'Other link' };
 export const clone = value => structuredClone(value);
-export const LOCKED_WORDING = ['footerTagline', 'poweredBy', 'brandName', 'brandUrl'];
+export const LOCKED_WORDING = ['brandLabel', 'shareButton', 'footerTagline', 'poweredBy', 'brandName', 'brandUrl'];
 export function applyEditingPolicy(value) {
   const card = clone(value);
   if (!card || typeof card !== 'object' || Array.isArray(card)) return card;
+  if (card.profile && typeof card.profile === 'object' && !Array.isArray(card.profile)) card.profile.cardUrl = DEFAULT_CARD.profile.cardUrl;
+  if (!Object.hasOwn(card, 'website')) card.website = clone(DEFAULT_CARD.website);
   if (card.wording && typeof card.wording === 'object' && !Array.isArray(card.wording)) {
     for (const key of LOCKED_WORDING) card.wording[key] = DEFAULT_CARD.wording[key];
   }
@@ -89,6 +92,7 @@ export function makeVCard(card) {
     if (c.type === 'website' && safeURL(c.value)) lines.push(`URL:${esc(c.value)}`);
   }
   if (safeURL(p.cardUrl)) lines.push(`URL:${esc(p.cardUrl)}`);
+  if (card.website?.enabled && safeURL(card.website.url)) lines.push(`URL:${esc(card.website.url)}`);
   for (const s of card.socials.filter(s => s.visible && safeURL(s.url))) lines.push(`X-SOCIALPROFILE;TYPE=${s.platform}:${esc(s.url)}`);
   if (card.background.bio) lines.push(`NOTE:${esc(card.background.bio)}`);
   lines.push('END:VCARD');
@@ -100,7 +104,7 @@ export function validateCard(card, { allowIncomplete = false } = {}) {
   const error = (path, message) => errors.push({ path, message });
   if (!card || typeof card !== 'object' || Array.isArray(card)) return [{ path: '', message: 'Choose a valid card backup.' }];
   const text = (value, path, max = 1000) => { if (typeof value !== 'string' || value.length > max) error(path, `Use text with no more than ${max} characters.`); };
-  for (const section of ['profile', 'background', 'design', 'wording']) {
+  for (const section of ['profile', 'background', 'design', 'wording', 'website']) {
     if (!card[section] || typeof card[section] !== 'object' || Array.isArray(card[section])) error(section, `The ${section} section is missing.`);
   }
   if (errors.length) return errors;
@@ -108,12 +112,15 @@ export function validateCard(card, { allowIncomplete = false } = {}) {
   if (!allowIncomplete && (typeof card.profile.firstName !== 'string' || !card.profile.firstName.trim())) error('profile.firstName', 'Enter a first name.');
   if (card.profile.photo && !photoURL(card.profile.photo)) error('profile.photo', 'Upload a JPG, PNG or WebP photo.');
   if (!Number.isFinite(card.profile.photoPosition) || card.profile.photoPosition < 0 || card.profile.photoPosition > 100) error('profile.photoPosition', 'Choose a photo position from 0 to 100.');
-  if (!allowIncomplete && card.profile.cardUrl && !safeURL(card.profile.cardUrl)) error('profile.cardUrl', 'Enter a complete http:// or https:// card link.');
+  if (card.profile.cardUrl !== DEFAULT_CARD.profile.cardUrl) error('profile.cardUrl', 'The card link is managed by TapX and cannot be changed.');
+  if (typeof card.website.enabled !== 'boolean') error('website.enabled', 'Choose whether to show your website button.');
+  text(card.website.url, 'website.url', 2000);
+  if (!allowIncomplete && card.website.enabled && !safeURL(card.website.url)) error('website.url', 'Enter a complete http:// or https:// website link.');
   for (const [key, sample] of Object.entries(DEFAULT_CARD.design)) {
     if (typeof sample === 'boolean' ? typeof card.design[key] !== 'boolean' : !/^#[0-9a-f]{6}$/i.test(card.design[key] ?? '')) error(`design.${key}`, 'Choose a valid colour or visibility setting.');
   }
   for (const key of Object.keys(DEFAULT_CARD.wording)) text(card.wording[key], `wording.${key}`, 2000);
-  for (const key of LOCKED_WORDING) if (card.wording[key] !== DEFAULT_CARD.wording[key]) error(`wording.${key}`, 'TapX footer and branding cannot be changed.');
+  for (const key of LOCKED_WORDING) if (card.wording[key] !== DEFAULT_CARD.wording[key]) error(`wording.${key}`, 'This TapX label or branding is fixed.');
   if (card.design.showFooter !== true) error('design.showFooter', 'The TapX footer must stay visible.');
   if (!allowIncomplete && card.wording.brandUrl && !safeURL(card.wording.brandUrl)) error('wording.brandUrl', 'Enter a complete http:// or https:// brand link.');
   const list = (value, path, max) => {

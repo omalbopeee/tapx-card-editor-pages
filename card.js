@@ -40,6 +40,7 @@ function renderCard(card) {
           <div class="intro"><span class="eyebrow">${e(w.introEyebrow)}</span><h2>${lines(w.introHeading)}</h2><p>${e(w.introDescription)}</p></div>
           <button class="save" type="button" data-action="vcard">${icon('add')}<span>${e(w.saveContact)}</span>${icon('download')}</button>
           ${contacts.length ? `<div class="actions" role="group" aria-label="Get in touch">${contacts.map(c => `<a class="${c.type === 'whatsapp' ? 'wa' : ''}" href="${e(contactURL(c))}" ${['website', 'whatsapp'].includes(c.type) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${icon(c.type)}<span>${e(c.label)}</span></a>`).join('')}</div>` : ''}
+          ${card.website.enabled && safeURL(card.website.url) ? `<a class="website-button" href="${e(safeURL(card.website.url))}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>My website</span>${icon('external')}</a>` : ''}
           ${d.showSocial && socials.length ? `<button class="social-tile" type="button" data-dialog="social" aria-haspopup="dialog"><span class="social-icons">${socials.slice(0, 3).map(s => icon(s.platform, s.platform)).join('')}</span><span class="social-copy"><strong>${e(w.findOnline)}</strong><small>${e(socials.map(s => s.label).join(' · '))}</small></span>${icon('chevron')}</button>` : ''}
           ${d.showBackground ? `<button class="background-button" type="button" data-dialog="background" aria-haspopup="dialog"><span>${e(w.backgroundLabel)}</span>${icon('chevron')}</button>` : ''}
         </section>

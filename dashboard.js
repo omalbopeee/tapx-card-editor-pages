@@ -51,7 +51,7 @@ function profilePanel() {
   return `<section class="form-card">${heading('01', 'Profile & photo', 'Introduce yourself. Make your first impression feel like you.', 'THE ESSENTIALS')}
     <div class="photo-editor">${photoURL(p.photo) ? `<img id="photo-thumbnail" class="photo-avatar" src="${e(photoURL(p.photo))}" alt="Current profile photo">` : `<div class="photo-avatar photo-placeholder">${icon('user')}</div>`}<div class="photo-copy"><strong>Your profile photo</strong><p>JPG, PNG or WebP. Up to 10 MB.</p><div class="photo-buttons"><button class="button secondary" type="button" data-command="upload-photo">${icon('upload')}${p.photo ? 'Change photo' : 'Upload photo'}</button>${p.photo ? '<button class="text-button" type="button" data-command="remove-photo">Remove</button>' : ''}</div></div></div>
     <input type="file" id="photo-file" accept="image/jpeg,image/png,image/webp" hidden>
-    <div class="form-grid">${field('profile.firstName', 'First name', { required: true })}${field('profile.lastName', 'Last name')}${field('profile.role', 'Job title', { placeholder: 'e.g. Junior Executive' })}${field('profile.department', 'Department / specialisation', { placeholder: 'e.g. Procurement (RM)' })}${field('profile.company', 'Company / organisation', { wide: true })}${field('profile.cardUrl', 'Your card link', { type: 'url', wide: true, help: 'Used by Share profile and included when someone saves your contact.' })}</div>
+    <div class="form-grid">${field('profile.firstName', 'First name', { required: true })}${field('profile.lastName', 'Last name')}${field('profile.role', 'Job title', { placeholder: 'e.g. Junior Executive' })}${field('profile.department', 'Department / specialisation', { placeholder: 'e.g. Procurement (RM)' })}${field('profile.company', 'Company / organisation', { wide: true })}</div>
     <div class="subsection"><div class="form-grid">${field('profile.photoAlt', 'Photo description', { wide: true, help: 'Describe the photo for visitors who use a screen reader.' })}<div class="field wide"><label for="photo-position">Photo position</label><div class="range-row"><span class="field-help">Left</span><input id="photo-position" data-path="profile.photoPosition" type="range" min="0" max="100" value="${p.photoPosition}"><span class="field-help">Right</span><output id="position-output" for="photo-position">${p.photoPosition}%</output></div></div></div></div>
     <p class="inline-note">${icon('info')}All your details can be changed here. No code needed.</p></section>
     <section class="form-card">${heading('↳', 'A note about you', 'A short introduction for your professional background.')}${field('background.bio', 'About me', { type: 'textarea', placeholder: 'A few words about what you do, what you care about, or what comes next.', help: 'Optional. Appears inside Professional background.' })}</section>${nextButton()}`;
@@ -59,7 +59,7 @@ function profilePanel() {
 function contactsPanel() {
   return `<section class="form-card">${heading('02', 'Contact details', 'Update the button labels and the details your visitors will use.', '3 CONTACT BUTTONS')}
     ${draft.contacts.map((contact, index) => `<div class="entry-card"><div class="entry-header">${icon(contact.type)}<strong>${e(DEFAULT_CARD.contacts[index].label)}</strong></div><div class="form-grid">${field(`contacts.${index}.label`, 'Button label', { required: true })}${field(`contacts.${index}.value`, CONTACT_TYPES[contact.type], { type: contact.type === 'email' ? 'email' : 'tel', required: true, placeholder: contact.type === 'email' ? 'name@example.com' : '+94 71 627 8399', help: contact.type === 'whatsapp' ? 'Include the country code. This number opens a WhatsApp chat.' : contact.type === 'phone' ? 'Include the country code.' : '' })}</div></div>`).join('')}
-    </section>${nextButton()}`;
+    </section><section class="form-card">${heading('↳', 'My website', 'Add a website button alongside your contact details.')}<div class="visibility-row"><div><strong>Show “My website” button</strong><p>Send visitors to your personal or business website.</p></div>${toggle('website.enabled', '', 'Show My website button')}</div>${draft.website.enabled ? `<div class="subsection">${field('website.url', 'Website link', { type: 'url', required: true, placeholder: 'https://yourwebsite.com', help: 'The button will say “My website”.' })}</div>` : ''}</section>${nextButton()}`;
 }
 function socialsPanel() {
   return `<section class="form-card">${heading('03', 'Social media', 'Give your connections somewhere to go next.', `${draft.socials.length} LINKS`)}
@@ -74,10 +74,10 @@ function backgroundPanel() {
     <section class="form-card">${heading('↳', 'Interests & skills', 'The things you know. The things you’re curious about.')}<div class="skill-grid">${b.skills.map((skill, i) => `<div class="skill-field ${errors.some(err => err.path === `background.skills.${i}`) ? 'invalid' : ''}"><input data-path="background.skills.${i}" value="${e(skill)}" aria-label="Skill ${i + 1}" maxlength="200" placeholder="Name a skill"><button type="button" data-remove="background.skills" data-index="${i}" aria-label="Remove ${e(skill || 'skill')}">${icon('close')}</button></div>`).join('')}</div>${addButton('background.skills', 'Add interest or skill')}</section>${nextButton()}`;
 }
 const WORDING_GROUPS = [
-  ['Your introduction', [['brandLabel', 'Card label'], ['heroEyebrow', 'Hero tagline'], ['greeting', 'Greeting'], ['photoLabel', 'Photo button label'], ['introEyebrow', 'Introduction caption'], ['introHeading', 'Introduction heading', 'textarea'], ['introDescription', 'Introduction description'], ['saveContact', 'Save contact button']]],
+  ['Your introduction', [['heroEyebrow', 'Hero tagline'], ['greeting', 'Greeting'], ['photoLabel', 'Photo button label'], ['introEyebrow', 'Introduction caption'], ['introHeading', 'Introduction heading', 'textarea'], ['introDescription', 'Introduction description'], ['saveContact', 'Save contact button']]],
   ['Social media', [['findOnline', 'Social links button'], ['socialEyebrow', 'Social dialog caption'], ['socialHeading', 'Social dialog heading'], ['socialDescription', 'Social dialog description']]],
   ['Professional background', [['backgroundLabel', 'Background button'], ['backgroundEyebrow', 'Background dialog caption'], ['backgroundHeading', 'Background dialog heading'], ['aboutHeading', 'About heading'], ['educationHeading', 'Education heading'], ['experienceHeading', 'Experience heading'], ['skillsHeading', 'Skills heading']]],
-  ['Share your card', [['shareButton', 'Share button'], ['shareHeading', 'Share dialog heading'], ['shareDescription', 'Share dialog description'], ['shareWhatsApp', 'WhatsApp share label'], ['cardLinkLabel', 'Card link label'], ['copyLabel', 'Copy link button']]]
+  ['Share your card', [['shareHeading', 'Share dialog heading'], ['shareDescription', 'Share dialog description'], ['shareWhatsApp', 'WhatsApp share label'], ['cardLinkLabel', 'Card link label'], ['copyLabel', 'Copy link button']]]
 ];
 function designPanel() {
   const labels = ['Button colour', 'Accent colour', 'Page background', 'Card background', 'Hero start', 'Hero end'];
@@ -142,7 +142,7 @@ function clearErrors() { errors = []; $('#error-banner').hidden = true; }
 function goToErrors() {
   const first = errors[0];
   const group = first.path.split('.')[0];
-  section = group === 'wording' || group === 'design' ? 'design' : group === 'profile' ? 'profile' : group === 'background' ? 'background' : group;
+  section = group === 'wording' || group === 'design' ? 'design' : group === 'website' ? 'contacts' : group === 'profile' ? 'profile' : group === 'background' ? 'background' : group;
   if (!SECTIONS.some(s => s.id === section)) section = 'profile';
   renderPanel();
   const field = document.querySelector(`[data-path="${first.path}"]`);
@@ -209,30 +209,6 @@ async function uploadPhoto(file) {
   } catch { toast('That photo could not be opened. Try another image.', 'info'); }
   finally { URL.revokeObjectURL(url); uploading = false; updateState(); }
 }
-function download(name, content, type) { const blob = new Blob([content], { type }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
-async function exportHTML() {
-  try {
-    if (saving) return toast('Wait for the save to finish, then download your card.', 'info');
-    const response = await fetch('/api/export');
-    if (!response.ok) throw new Error();
-    download('digital-card.html', await response.text(), 'text/html;charset=utf-8');
-    toast(dirty() ? 'Saved card downloaded. Save first to include your current edits.' : 'Your standalone card is downloaded.');
-  } catch { toast('Could not export the card. Check that the server is running.', 'info'); }
-}
-async function importJSON(file) {
-  if (!file) return;
-  if (file.size > 7_000_000) return toast('Choose a card backup smaller than 7 MB.', 'info');
-  try {
-    const input = JSON.parse(await file.text());
-    const card = applyEditingPolicy(input.card || input);
-    const issues = validateCard(card);
-    if (issues.length) return toast(`Backup not imported: ${issues[0].message}`, 'info');
-    draft = clone(card); clearErrors(); renderPanel(); changed();
-    toast('Backup imported as a draft. Preview and save when ready.');
-  } catch { toast('Choose a valid JSON backup from Card tools.', 'info'); }
-  finally { $('#import-file').value = ''; }
-}
-
 document.addEventListener('input', event => {
   const input = event.target.closest('[data-path]');
   if (!input || !draft || input.tagName === 'SELECT' || input.type === 'checkbox') return;
@@ -245,10 +221,9 @@ document.addEventListener('input', event => {
 document.addEventListener('change', event => {
   const input = event.target;
   if (input.id === 'photo-file') return uploadPhoto(input.files[0]);
-  if (input.id === 'import-file') return importJSON(input.files[0]);
   if (!input.dataset.path || !draft) return;
   const path = input.dataset.path;
-  if (input.type === 'checkbox') { set(path, input.checked); changed(); }
+  if (input.type === 'checkbox') { set(path, input.checked); changed({ render: path === 'website.enabled' }); }
   if (input.tagName === 'SELECT') {
     const old = get(path); set(path, input.value);
     if (path.endsWith('.type')) {
@@ -284,7 +259,6 @@ document.addEventListener('click', async event => {
     document.querySelectorAll('[data-device]').forEach(el => { const active = el === button; el.classList.toggle('active', active); el.setAttribute('aria-pressed', String(active)); }); return;
   }
   const command = button.dataset.command;
-  if (command) $('.tools-menu')?.removeAttribute('open');
   if (command === 'upload-photo') $('#photo-file').click();
   if (command === 'remove-photo') { draft.profile.photo = ''; draft.design.showPhoto = false; changed({ render: true }); }
   if (command === 'close-preview') $('#preview-dialog').close();
@@ -292,16 +266,6 @@ document.addEventListener('click', async event => {
   if (command === 'cancel-reset') $('#reset-dialog').close();
   if (command === 'confirm-reset') { draft = clone(DEFAULT_CARD); clearErrors(); $('#reset-dialog').close(); renderPanel(); refreshPreviews(); stashDraft(); toast('Original card restored to your draft. Preview and save when ready.'); }
   if (command === 'confirm-discard') { draft = clone(saved); clearErrors(); $('#discard-dialog').close(); renderPanel(); refreshPreviews(); stashDraft(); toast('Restored your saved card.'); }
-  if (command === 'export-json') {
-    const backup = clone(draft);
-    if (backup.profile.photo === './assets/ovin.jpg') {
-      try { const response = await fetch('./assets/ovin.jpg'); if (!response.ok) throw new Error(); const blob = await response.blob(); backup.profile.photo = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(blob); }); }
-      catch { return toast('Could not include the photo. Check the server and try again.', 'info'); }
-    }
-    download('tapx-card-backup.json', JSON.stringify({ card: backup, exportedAt: new Date().toISOString() }, null, 2), 'application/json');
-  }
-  if (command === 'export-html') await exportHTML();
-  if (command === 'import-json') $('#import-file').click();
   if (command === 'restore-draft' && recoveredDraft) { draft = clone(recoveredDraft.card); clearErrors(); $('#recovery-banner').hidden = true; recoveredDraft = null; renderPanel(); changed(); toast('Your unfinished edit is back.'); }
   if (command === 'dismiss-draft') { $('#recovery-banner').hidden = true; recoveredDraft = null; try { localStorage.removeItem(DRAFT_KEY); } catch {} }
 });
