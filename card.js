@@ -1,6 +1,6 @@
-import './static-api.js';
-import { escapeHTML, safeURL, photoURL, contactURL, makeVCard, applyEditingPolicy } from './model.js';
-import { icon } from './icons.js';
+import './static-api.js?v=2dde10de963d';
+import { escapeHTML, safeURL, photoURL, contactURL, makeVCard, applyEditingPolicy } from './model.js?v=2dde10de963d';
+import { icon } from './icons.js?v=2dde10de963d';
 
 const root = document.getElementById('card-root');
 const isPreview = !window.EXPORTED_CARD && new URLSearchParams(location.search).has('preview');

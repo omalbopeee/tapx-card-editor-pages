@@ -1,6 +1,6 @@
-import './static-api.js';
-import { DEFAULT_CARD, CONTACT_TYPES, PLATFORMS, clone, escapeHTML, photoURL, validateCard, applyEditingPolicy } from './model.js';
-import { icon } from './icons.js';
+import './static-api.js?v=2dde10de963d';
+import { DEFAULT_CARD, CONTACT_TYPES, PLATFORMS, clone, escapeHTML, photoURL, validateCard, applyEditingPolicy } from './model.js?v=2dde10de963d';
+import { icon } from './icons.js?v=2dde10de963d';
 
 const $ = selector => document.querySelector(selector);
 const e = escapeHTML;
@@ -52,7 +52,7 @@ function profilePanel() {
     <div class="photo-editor">${photoURL(p.photo) ? `<img id="photo-thumbnail" class="photo-avatar" src="${e(photoURL(p.photo))}" alt="Current profile photo">` : `<div class="photo-avatar photo-placeholder">${icon('user')}</div>`}<div class="photo-copy"><strong>Your profile photo</strong><p>JPG, PNG or WebP. Up to 10 MB.</p><div class="photo-buttons"><button class="button secondary" type="button" data-command="upload-photo">${icon('upload')}${p.photo ? 'Change photo' : 'Upload photo'}</button>${p.photo ? '<button class="text-button" type="button" data-command="remove-photo">Remove</button>' : ''}</div></div></div>
     <input type="file" id="photo-file" accept="image/jpeg,image/png,image/webp" hidden>
     <div class="form-grid">${field('profile.firstName', 'First name', { required: true })}${field('profile.lastName', 'Last name')}${field('profile.role', 'Job title', { placeholder: 'e.g. Junior Executive' })}${field('profile.department', 'Department / specialisation', { placeholder: 'e.g. Procurement (RM)' })}${field('profile.company', 'Company / organisation', { wide: true })}</div>
-    <p class="inline-note">${icon('info')}All your details can be changed here. No code needed.</p></section>${nextButton()}`;
+    </section>${nextButton()}`;
 }
 function contactsPanel() {
   return `<section class="form-card">${heading('02', 'Contact details', 'Update the button labels and the details your visitors will use.', '3 CONTACT BUTTONS')}
