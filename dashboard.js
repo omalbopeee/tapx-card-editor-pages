@@ -1,6 +1,6 @@
-import './static-api.js?v=2dde10de963d';
-import { DEFAULT_CARD, CONTACT_TYPES, PLATFORMS, clone, escapeHTML, photoURL, validateCard, applyEditingPolicy } from './model.js?v=2dde10de963d';
-import { icon } from './icons.js?v=2dde10de963d';
+import './static-api.js?v=883070ad403d';
+import { DEFAULT_CARD, CONTACT_TYPES, PLATFORMS, clone, escapeHTML, photoURL, validateCard, applyEditingPolicy } from './model.js?v=883070ad403d';
+import { icon } from './icons.js?v=883070ad403d';
 
 const $ = selector => document.querySelector(selector);
 const e = escapeHTML;
@@ -86,7 +86,7 @@ function designPanel() {
   ];
   return `<section class="form-card">${heading('05', 'Look & feel', 'Keep the original style, or give your card a different feel.')}<div class="preset-grid">${PRESETS.map((preset, index) => `<button class="preset ${COLOURS.every((key, i) => draft.design[key] === preset.colors[i]) ? 'active' : ''}" type="button" data-preset="${index}"><span class="preset-colors">${preset.colors.slice(0, 3).map(color => `<i style="background:${color}"></i>`).join('')}</span>${e(preset.name)}</button>`).join('')}</div><div class="form-grid">${COLOURS.map((key, i) => `<div class="field"><label for="colour-${key}">${labels[i]}</label><div class="colour-field"><input type="color" data-path="design.${key}" id="colour-${key}" value="${draft.design[key]}"><span id="colour-value-${key}">${draft.design[key].toUpperCase()}</span></div></div>`).join('')}</div></section>
     <section class="form-card">${heading('↳', 'What’s on your card', 'Choose which parts of your story to share.')} ${visibility.map(([key, label, description]) => `<div class="visibility-row"><div><strong>${e(label)}</strong><p>${e(description)}</p></div>${toggle(`design.${key}`, '', label)}</div>`).join('')}</section>
-    <section class="form-card">${heading('↳', 'Make every word your own', 'Edit all the headings, button labels and supporting text.')} ${WORDING_GROUPS.map(([title, fields]) => `<div class="wording-group"><h3>${e(title)}</h3><div class="form-grid">${fields.map(([key, label, type]) => field(`wording.${key}`, label, { type: type || 'text', wide: type === 'textarea' || ['introDescription', 'socialDescription', 'shareDescription', 'footerTagline'].includes(key) })).join('')}</div></div>`).join('')}</section>`;
+    <section class="form-card">${heading('↳', 'Make every word your own', 'Edit all the headings, button labels and supporting text.')} ${WORDING_GROUPS.map(([title, fields]) => `<div class="wording-group"><h3>${e(title)}</h3><div class="form-grid">${fields.map(([key, label, type]) => field(`wording.${key}`, label, { type: type || 'text', wide: type === 'textarea' || ['introDescription', 'socialDescription', 'shareDescription'].includes(key) })).join('')}</div></div>`).join('')}</section>`;
 }
 
 function renderNav() { $('#section-nav').innerHTML = SECTIONS.map(s => `<button class="nav-item ${s.id === section ? 'active' : ''}" type="button" data-section="${s.id}" ${s.id === section ? 'aria-current="page"' : ''}>${icon(s.icon)}${e(s.label)}</button>`).join(''); }
@@ -226,13 +226,6 @@ document.addEventListener('change', event => {
   if (input.type === 'checkbox') { set(path, input.checked); changed({ render: path === 'website.enabled' }); }
   if (input.tagName === 'SELECT') {
     const old = get(path); set(path, input.value);
-    if (path.endsWith('.type')) {
-      const base = path.slice(0, -5);
-      const defaultLabels = { phone: 'Call', whatsapp: 'WhatsApp', email: 'Email', website: 'Website' };
-      if (get(`${base}.label`) === defaultLabels[old]) set(`${base}.label`, defaultLabels[input.value]);
-      // A previous number is reusable when switching between call and WhatsApp.
-      if (!['phone', 'whatsapp'].includes(old) || !['phone', 'whatsapp'].includes(input.value)) set(`${base}.value`, '');
-    }
     if (path.endsWith('.platform')) {
       const base = path.slice(0, -9);
       if (get(`${base}.label`) === PLATFORMS[old]) set(`${base}.label`, PLATFORMS[input.value]);
@@ -240,7 +233,7 @@ document.addEventListener('change', event => {
     changed({ render: true });
   }
 });
-document.addEventListener('click', async event => {
+document.addEventListener('click', event => {
   const button = event.target.closest('button');
   if (!button) return;
   if (button.dataset.section) { if (draft) showSection(button.dataset.section); return; }

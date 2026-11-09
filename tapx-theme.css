@@ -63,8 +63,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .brand { gap: 10px; letter-spacing: -.6px; }
 .brand-logo { display: block; width: 56px; height: 56px; object-fit: contain; flex-shrink: 0; border-radius: 8px; }
 .brand-title { font: 600 18px/1.2 var(--font-heading); white-space: nowrap; }
-.brand-title small { font: 500 7px/1.5 var(--font-body); letter-spacing: 1.1px; color: var(--tapx-on-navy); }
-.brand-x, .workspace-footer strong span { color: var(--tapx-red); }
+.brand-title small { font: 500 7px/1.5 var(--font-body); letter-spacing: 1.1px; color: var(--tapx-on-navy); } .workspace-footer strong span { color: var(--tapx-red); }
 .workspace-label, .nav-label { color: #8fa5c2; }
 .card-selected { background: #ffffff0d; border-color: #ffffff26; color: var(--tapx-white); }
 .card-selected-icon { background: #ffffff12; color: var(--tapx-red-accent); }
@@ -114,7 +113,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .photo-placeholder { color: var(--tapx-muted); }
 .text-button { color: var(--tapx-muted); }
 .text-button:hover { color: var(--tapx-red); }
-.field > label, .field-label, .field-heading { color: var(--tapx-navy); }
+.field > label{ color: var(--tapx-navy); }
 .required-mark { color: var(--tapx-red); }
 
 .field input:not([type='checkbox']):not([type='color']):not([type='range']),
@@ -127,7 +126,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .field input::placeholder, .field textarea::placeholder { color: #7d8b9e; }
 .field input:hover, .field textarea:hover, .field select:hover { border-color: #9daec3; }
 .field input[aria-invalid='true'], .field textarea[aria-invalid='true'], .field select[aria-invalid='true'] { border-color: var(--tapx-red); }
-.field-help, .inline-note, .editor-footer { color: var(--tapx-subtle); }
+.field-help, .editor-footer { color: var(--tapx-subtle); }
 .tip-card { background: #edf3fb; border-color: #d7e3f4; color: var(--tapx-muted); }
 .tip-card > .icon { color: var(--tapx-red); }
 .tip-card strong { color: var(--tapx-navy); }
@@ -141,11 +140,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .phone-frame iframe { background: var(--tapx-white); }
 .preview-caption, .preview-tip { color: var(--tapx-subtle); }
 .preview-tip strong { color: var(--tapx-navy); }
-.tools-row { border-color: var(--tapx-border); color: var(--tapx-muted); }
-.tools-row > a:hover { color: var(--tapx-red); }
-.tools-popover { background: var(--tapx-white); border-color: var(--tapx-border); box-shadow: 0 10px 30px #061e3f20; }
-.tools-popover button { color: var(--tapx-navy); }
-.tools-popover button:hover { background: var(--tapx-surface); }
 .workspace-footer { color: var(--tapx-subtle); border-color: var(--tapx-border); }
 .workspace-footer strong { color: var(--tapx-navy); }
 .entry-card { background: #fafbfd; border-color: var(--tapx-border); }
@@ -163,9 +157,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .skill-field input { color: var(--tapx-navy); }
 .skill-field button { color: var(--tapx-subtle); }
 .skill-field button:hover { color: var(--tapx-red); }
-.skill-field.invalid { border-color: var(--tapx-red); }
-.range-row input { accent-color: var(--tapx-red); }
-.range-row output, .visibility-row p { color: var(--tapx-muted); }
+.skill-field.invalid { border-color: var(--tapx-red); } .visibility-row p { color: var(--tapx-muted); }
 .preset { color: var(--tapx-muted); border-color: var(--tapx-border); }
 .preset:hover { background: var(--tapx-surface); }
 .preset.active { outline-color: var(--tapx-red); }

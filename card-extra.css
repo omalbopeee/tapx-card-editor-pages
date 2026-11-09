@@ -11,7 +11,6 @@
 .hero.no-photo .identity { padding-top: 60px; }
 .social-copy small { overflow: hidden; text-overflow: ellipsis; }
 .card-loading { padding: 40px; text-align: center; }
-.empty-card-note { color: var(--muted); font-size: 12px; }
 .save:hover, .share-profile:hover { filter: brightness(1.12); background: var(--green); }
 .social-tile .social-icons .icon { flex-shrink: 0; }
 @media (max-width: 1023px) {

@@ -1,5 +1,5 @@
 // GitHub Pages adapter. Saves are private to this browser; nothing is uploaded.
-import { DEFAULT_CARD, clone, applyEditingPolicy, validateCard } from './model.js?v=2dde10de963d';
+import { DEFAULT_CARD, clone, applyEditingPolicy, validateCard } from './model.js?v=883070ad403d';
 
 const appBase = new URL('.', import.meta.url);
 const recordKey = `tapx-pages-saved-v1:${appBase.pathname}`;

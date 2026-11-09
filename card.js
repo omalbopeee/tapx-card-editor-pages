@@ -1,9 +1,9 @@
-import './static-api.js?v=2dde10de963d';
-import { escapeHTML, safeURL, photoURL, contactURL, makeVCard, applyEditingPolicy } from './model.js?v=2dde10de963d';
-import { icon } from './icons.js?v=2dde10de963d';
+import './static-api.js?v=883070ad403d';
+import { escapeHTML, safeURL, photoURL, contactURL, makeVCard, applyEditingPolicy } from './model.js?v=883070ad403d';
+import { icon } from './icons.js?v=883070ad403d';
 
 const root = document.getElementById('card-root');
-const isPreview = !window.EXPORTED_CARD && new URLSearchParams(location.search).has('preview');
+const isPreview = new URLSearchParams(location.search).has('preview');
 let currentCard, toastTimer;
 const e = escapeHTML;
 const lines = value => e(value).replaceAll('\n', '<br>');
@@ -40,7 +40,7 @@ function renderCard(card) {
         <section class="content" id="contact" tabindex="-1" aria-label="Contact ${e(name)}">
           <div class="intro"><span class="eyebrow">${e(w.introEyebrow)}</span><h2>${lines(w.introHeading)}</h2><p>${e(w.introDescription)}</p></div>
           <button class="save" type="button" data-action="vcard">${icon('add')}<span>${e(w.saveContact)}</span>${icon('download')}</button>
-          ${contacts.length || websiteURL ? `<div class="actions" role="group" aria-label="Get in touch">${contacts.map(c => `<a class="${c.type === 'whatsapp' ? 'wa' : ''}" href="${e(contactURL(c))}" ${['website', 'whatsapp'].includes(c.type) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${icon(c.type)}<span>${e(c.label)}</span></a>`).join('')}${websiteURL ? `<a class="website-button" href="${e(websiteURL)}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>My website</span></a>` : ''}</div>` : ''}
+          ${contacts.length || websiteURL ? `<div class="actions" role="group" aria-label="Get in touch">${contacts.map(c => `<a class="${c.type === 'whatsapp' ? 'wa' : ''}" href="${e(contactURL(c))}" ${c.type === 'whatsapp' ? 'target="_blank" rel="noopener noreferrer"' : ''}>${icon(c.type)}<span>${e(c.label)}</span></a>`).join('')}${websiteURL ? `<a class="website-button" href="${e(websiteURL)}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>My website</span></a>` : ''}</div>` : ''}
           ${d.showSocial && socials.length ? `<button class="social-tile" type="button" data-dialog="social" aria-haspopup="dialog"><span class="social-icons">${socials.slice(0, 3).map(s => icon(s.platform, s.platform)).join('')}</span><span class="social-copy"><strong>${e(w.findOnline)}</strong><small>${e(socials.map(s => s.label).join(' · '))}</small></span>${icon('chevron')}</button>` : ''}
           ${d.showBackground ? `<button class="background-button" type="button" data-dialog="background" aria-haspopup="dialog"><span>${e(w.backgroundLabel)}</span>${icon('chevron')}</button>` : ''}
         </section>
@@ -90,8 +90,6 @@ if (isPreview) {
     if (event.source === parent && event.origin === location.origin && event.data?.type === 'tapx:render') renderCard(event.data.card);
   });
   parent.postMessage({ type: 'tapx:ready' }, location.origin);
-} else if (window.EXPORTED_CARD) {
-  renderCard(window.EXPORTED_CARD);
 } else {
   fetch('/api/card').then(response => { if (!response.ok) throw new Error(); return response.json(); }).then(record => renderCard(record.card)).catch(() => { root.innerHTML = '<p class="card-loading">Your card could not be loaded. Start the dashboard server and try again.</p>'; });
 }

@@ -32,7 +32,6 @@ const paths = {
   arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
   undo: '<path d="M3 10h11a6 6 0 0 1 0 12M3 10l5-5M3 10l5 5"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/>',
-  file: '<path d="M14 2H4v20h16V8l-6-6ZM14 2v6h6M8 13h8M8 17h5"/>',
   x: '<path d="m4 3 16 18M20 3 4 21M4 3h4l12 18h-4"/>',
   youtube: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3Z"/>',
   tiktok: '<path d="M14 3v12a4 4 0 1 1-4-4M14 3c0 4 3 6 7 6"/>',

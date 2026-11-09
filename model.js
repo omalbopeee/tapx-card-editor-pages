@@ -49,7 +49,7 @@ export const DEFAULT_CARD = {
   }
 };
 
-export const CONTACT_TYPES = { phone: 'Phone number', whatsapp: 'WhatsApp', email: 'Email address', website: 'Website' };
+export const CONTACT_TYPES = { phone: 'Phone number', whatsapp: 'WhatsApp', email: 'Email address' };
 export const PLATFORMS = { linkedin: 'LinkedIn', instagram: 'Instagram', facebook: 'Facebook', x: 'X / Twitter', youtube: 'YouTube', tiktok: 'TikTok', github: 'GitHub', website: 'Website', other: 'Other link' };
 export const clone = value => structuredClone(value);
 export const LOCKED_WORDING = ['brandLabel', 'shareButton', 'footerTagline', 'poweredBy', 'brandName', 'brandUrl'];
@@ -80,7 +80,7 @@ export function contactURL(contact) {
   if (contact.type === 'phone') return `tel:${v.replace(/[^+\d]/g, '')}`;
   if (contact.type === 'whatsapp') return `https://wa.me/${v.replace(/\D/g, '')}`;
   if (contact.type === 'email') return `mailto:${encodeURIComponent(v).replace(/%40/g, '@')}`;
-  return safeURL(v);
+  return '';
 }
 export function makeVCard(card) {
   const esc = s => String(s ?? '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r/g, '');
@@ -89,7 +89,6 @@ export function makeVCard(card) {
   for (const c of card.contacts.filter(c => c.visible && c.value)) {
     if (c.type === 'phone') lines.push(`TEL;TYPE=CELL:${esc(c.value)}`);
     if (c.type === 'email') lines.push(`EMAIL;TYPE=INTERNET:${esc(c.value)}`);
-    if (c.type === 'website' && safeURL(c.value)) lines.push(`URL:${esc(c.value)}`);
   }
   if (safeURL(p.cardUrl)) lines.push(`URL:${esc(p.cardUrl)}`);
   if (card.website?.enabled && safeURL(card.website.url)) lines.push(`URL:${esc(card.website.url)}`);
@@ -139,7 +138,6 @@ export function validateCard(card, { allowIncomplete = false } = {}) {
     if (!allowIncomplete && (typeof c.value !== 'string' || !c.value.trim())) error(`contacts.${i}.value`, 'Enter the phone number or email address for this button.');
     if (!allowIncomplete && c.value && ['phone', 'whatsapp'].includes(c.type) && !/^\+?[\d ()\-.]{5,30}$/.test(c.value)) error(`contacts.${i}.value`, 'Enter a phone number with country code, for example +94716278399.');
     if (!allowIncomplete && c.value && c.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.value)) error(`contacts.${i}.value`, 'Enter a valid email address.');
-    if (!allowIncomplete && c.value && c.type === 'website' && !safeURL(c.value)) error(`contacts.${i}.value`, 'Enter a complete http:// or https:// link.');
   }
   for (const [i, s] of list(card.socials, 'socials', 30).entries()) {
     if (!s || typeof s !== 'object') { error(`socials.${i}`, 'Invalid social link.'); continue; }
