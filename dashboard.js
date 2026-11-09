@@ -52,7 +52,6 @@ function profilePanel() {
     <div class="photo-editor">${photoURL(p.photo) ? `<img id="photo-thumbnail" class="photo-avatar" src="${e(photoURL(p.photo))}" alt="Current profile photo">` : `<div class="photo-avatar photo-placeholder">${icon('user')}</div>`}<div class="photo-copy"><strong>Your profile photo</strong><p>JPG, PNG or WebP. Up to 10 MB.</p><div class="photo-buttons"><button class="button secondary" type="button" data-command="upload-photo">${icon('upload')}${p.photo ? 'Change photo' : 'Upload photo'}</button>${p.photo ? '<button class="text-button" type="button" data-command="remove-photo">Remove</button>' : ''}</div></div></div>
     <input type="file" id="photo-file" accept="image/jpeg,image/png,image/webp" hidden>
     <div class="form-grid">${field('profile.firstName', 'First name', { required: true })}${field('profile.lastName', 'Last name')}${field('profile.role', 'Job title', { placeholder: 'e.g. Junior Executive' })}${field('profile.department', 'Department / specialisation', { placeholder: 'e.g. Procurement (RM)' })}${field('profile.company', 'Company / organisation', { wide: true })}</div>
-    <div class="subsection"><div class="form-grid"><div class="field wide"><label for="photo-position">Photo position</label><div class="range-row"><span class="field-help">Left</span><input id="photo-position" data-path="profile.photoPosition" type="range" min="0" max="100" value="${p.photoPosition}"><span class="field-help">Right</span><output id="position-output" for="photo-position">${p.photoPosition}%</output></div></div></div></div>
     <p class="inline-note">${icon('info')}All your details can be changed here. No code needed.</p></section>${nextButton()}`;
 }
 function contactsPanel() {
@@ -214,8 +213,7 @@ async function uploadPhoto(file) {
 document.addEventListener('input', event => {
   const input = event.target.closest('[data-path]');
   if (!input || !draft || input.tagName === 'SELECT' || input.type === 'checkbox') return;
-  set(input.dataset.path, input.type === 'range' ? Number(input.value) : input.value);
-  if (input.type === 'range') $('#position-output').value = `${input.value}%`;
+  set(input.dataset.path, input.value);
   if (input.type === 'color') { $(`#colour-value-${input.dataset.path.split('.')[1]}`).textContent = input.value.toUpperCase(); document.querySelectorAll('.preset.active').forEach(el => el.classList.remove('active')); }
   if (input.getAttribute('aria-invalid') === 'true') { input.removeAttribute('aria-invalid'); const errorEl = document.getElementById(`${input.id}-error`); if (errorEl) errorEl.hidden = true; errors = errors.filter(error => error.path !== input.dataset.path); }
   changed();
